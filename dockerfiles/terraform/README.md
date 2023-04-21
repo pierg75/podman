@@ -7,5 +7,5 @@ Build it:
 
 Run it in a directory with a `main.tf` file:
 ```
-# podman run --rm -v $PWD:/tf:Z tf init
+# podman run --rm -it -v $PWD:/tf:Z tf init
 ```
