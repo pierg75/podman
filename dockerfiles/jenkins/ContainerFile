@@ -1,0 +1,19 @@
+FROM fedora:latest
+LABEL \
+    org.opencontainers.image.authors="Pierguido Lambri <plambri@redhat.com>" \
+    org.opencontainers.image.licenses=Apache-2.0 \
+    purpose="Containers to test jenkins"
+
+EXPOSE 8080
+
+RUN dnf update -y && dnf clean all
+RUN dnf install -y dnf-utils && dnf clean all
+RUN dnf config-manager --add-repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+RUN dnf config-manager --save --setopt=jenkins.gpgcheck=0
+RUN dnf install -y jenkins java-11-openjdk && dnf clean all
+
+VOLUME ["/root/.jenkins"]
+
+ADD ./supervisord.conf /etc/supervisord.conf
+
+CMD [ "/usr/bin/jenkins" ]
